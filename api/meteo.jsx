@@ -12,7 +12,6 @@ export class MeteoAPI {
       const response = await axios.get(url);
       return response.data;
     } catch (error) {
-      // Handle network errors or API failures
       throw new Error("Failed to fetch weather data");
     }
   }
@@ -31,8 +30,20 @@ export class MeteoAPI {
       } = response.data;
       return city || village || town;
     } catch (error) {
-      // Handle network errors or API failures
       throw new Error("Failed to fetch city data");
+    }
+  }
+
+  static async fetchCoordsfromCity(city) {
+    try {
+      const { latitude: lat, longitude: lng } = (
+        await axios.get(
+          `https://open-meteo.com/en/docs/geocoding-api#name=${city}&count=1&language=fr&format=json`
+        )
+      ).data.results[0];
+      return { lat, lng };
+    } catch (error) {
+      throw new Error("City does not exist");
     }
   }
 }

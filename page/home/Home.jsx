@@ -1,7 +1,6 @@
 import { styles } from "./home.style";
 import { MeteoAPI } from "../../api/meteo";
-import { Text, View } from "react-native";
-import { Txt } from "../../components/text/Txt";
+import { View, Alert } from "react-native";
 import { MeteoBasic } from "../../components/basic/MeteoBasic";
 import {
   requestForegroundPermissionsAsync,
@@ -12,6 +11,7 @@ import { getWeatherInterpreation } from "../../components/service/meteo-services
 import { MeteoAdvanced } from "../../components/advanced/MeteoAdvanced";
 import { useNavigation } from "@react-navigation/native";
 import { Container } from "../../components/container/Container";
+import { SearchBar } from "../../components/searchbar/SearchBar";
 
 export function Home() {
   const [coords, setCoords] = useState();
@@ -66,10 +66,19 @@ export function Home() {
   const nav = useNavigation();
 
   function navToForecast() {
-    nav.navigate("Forecast")
+    nav.navigate("Forecast", { city, ...weather.daily });
   }
 
-  return (currentWeather ? 
+  async function fetchCoordsByCity(city){
+    try{
+      const coords = await MeteoAPI.fetchCoordsfromCity(city);
+      setCoords(coords);
+    }catch(e){
+      Alert.alert("Sorry", e)
+    }
+  }
+
+  return currentWeather ? (
     <Container>
       <View style={styles.meteo_basic}>
         <MeteoBasic
@@ -79,7 +88,9 @@ export function Home() {
           onPress={navToForecast}
         />
       </View>
-      <View style={styles.searchbar}></View>
+      <View style={styles.searchbar}>
+        <SearchBar onSubmit={fetchCoordsByCity}/>
+      </View>
       <View style={styles.meteo_advanced}>
         <MeteoAdvanced
           wind={currentWeather.windspeed}
@@ -88,5 +99,5 @@ export function Home() {
         />
       </View>
     </Container>
-   : null)
+  ) : null;
 }

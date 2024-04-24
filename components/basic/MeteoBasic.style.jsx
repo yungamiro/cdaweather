@@ -6,7 +6,8 @@ export const styles = StyleSheet.create({
     },
     label:{
         alignSelf:"flex-end",
-        transform:[{rotate: "-90deg"}]
+        marginRight:13,
+        fontSize:20,
     },
     image:{
         height:90,
@@ -18,6 +19,6 @@ export const styles = StyleSheet.create({
         justifyContent:"space-between",
     },
     temperature:{
-        fontSize:150,
+        fontSize:100,
     }
 })

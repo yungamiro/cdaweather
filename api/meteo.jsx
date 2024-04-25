@@ -38,7 +38,7 @@ export class MeteoAPI {
     try {
       const { latitude: lat, longitude: lng } = (
         await axios.get(
-          `https://open-meteo.com/en/docs/geocoding-api#name=${city}&count=1&language=fr&format=json`
+          `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=fr&format=json`
         )
       ).data.results[0];
       return { lat, lng };

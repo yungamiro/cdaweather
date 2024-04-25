@@ -74,6 +74,7 @@ export function Home() {
       const coords = await MeteoAPI.fetchCoordsfromCity(city);
       setCoords(coords);
     }catch(e){
+      console.log("sorry",e)
       Alert.alert("Sorry", e)
     }
   }
